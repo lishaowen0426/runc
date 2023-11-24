@@ -19,7 +19,7 @@ import (
 	"github.com/opencontainers/runc/libcontainer/devices"
 	"github.com/opencontainers/runc/libcontainer/seccomp"
 	libcontainerUtils "github.com/opencontainers/runc/libcontainer/utils"
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
 	"github.com/sirupsen/logrus"
 
 	"golang.org/x/sys/unix"

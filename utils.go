@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"

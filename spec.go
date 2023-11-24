@@ -8,7 +8,8 @@ import (
 
 	"github.com/opencontainers/runc/libcontainer/configs"
 	"github.com/opencontainers/runc/libcontainer/specconv"
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
+	//"github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/urfave/cli"
 )
 

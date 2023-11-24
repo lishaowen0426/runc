@@ -16,7 +16,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
 	"github.com/sirupsen/logrus"
 	"github.com/vishvananda/netlink/nl"
 	"golang.org/x/sys/execabs"

@@ -5,7 +5,7 @@ import (
 	"sort"
 
 	"github.com/opencontainers/runc/libcontainer/configs"
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
 )
 
 // flagTsync is recognized but ignored by runc, and it is not defined

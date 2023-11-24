@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/coreos/go-systemd/v22/activation"
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
 	selinux "github.com/opencontainers/selinux/go-selinux"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"

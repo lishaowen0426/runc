@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/opencontainers/runc/libcontainer/configs"
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
 	"golang.org/x/sys/unix"
 )
 

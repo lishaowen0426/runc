@@ -14,7 +14,7 @@ import (
 
 	"github.com/containerd/console"
 	"github.com/moby/sys/user"
-	"github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runc/specs-go"
 	"github.com/sirupsen/logrus"
 	"github.com/vishvananda/netlink"
 	"golang.org/x/sys/unix"
