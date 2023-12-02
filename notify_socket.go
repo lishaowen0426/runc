@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"os"
@@ -30,6 +31,11 @@ func newNotifySocket(context *cli.Context, notifySocketHost string, id string) *
 	}
 
 	root := filepath.Join(context.GlobalString("root"), id)
+
+	fmt.Printf("notifySocketHost = %s, root = %s\n", notifySocketHost, root)
+
+	return nil
+
 	socketPath := filepath.Join(root, "notify", "notify.sock")
 
 	notifySocket := &notifySocket{

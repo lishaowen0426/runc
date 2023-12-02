@@ -50,6 +50,7 @@ func initMaps() {
 			specs.UTSNamespace:     configs.NEWUTS,
 			specs.CgroupNamespace:  configs.NEWCGROUP,
 			specs.TimeNamespace:    configs.NEWTIME,
+			specs.BPFNamespace:     configs.NEWBPF,
 		}
 
 		mountPropagationMapping = map[string]int{
@@ -374,7 +375,6 @@ func CreateLibcontainerConfig(opts *CreateOpts) (*configs.Config, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	c, err := CreateCgroupConfig(opts, defaultDevs)
 	if err != nil {
 		return nil, err
@@ -645,7 +645,6 @@ func CreateCgroupConfig(opts *CreateOpts, defaultDevs []*devices.Device) (*confi
 		useSystemdCgroup = opts.UseSystemdCgroup
 		name             = opts.CgroupName
 	)
-
 	c := &configs.Cgroup{
 		Systemd:   useSystemdCgroup,
 		Rootless:  opts.RootlessCgroups,

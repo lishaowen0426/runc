@@ -10,6 +10,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4
 	github.com/docker/go-units v0.5.0
 	github.com/godbus/dbus/v5 v5.1.0
+	github.com/hashicorp/go-sockaddr v1.0.6
 	github.com/moby/sys/mountinfo v0.6.2
 	github.com/moby/sys/user v0.1.0
 	github.com/mrunalp/fileutils v0.5.1
@@ -21,7 +22,7 @@ require (
 	github.com/urfave/cli v1.22.12
 	github.com/vishvananda/netlink v1.1.0
 	golang.org/x/net v0.17.0
-	golang.org/x/sys v0.13.0
+	golang.org/x/sys v0.15.0
 	google.golang.org/protobuf v1.31.0
 )
 

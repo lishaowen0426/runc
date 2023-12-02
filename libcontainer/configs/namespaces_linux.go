@@ -15,6 +15,7 @@ const (
 	NEWUSER   NamespaceType = "NEWUSER"
 	NEWCGROUP NamespaceType = "NEWCGROUP"
 	NEWTIME   NamespaceType = "NEWTIME"
+	NEWBPF    NamespaceType = "NEWBPF"
 )
 
 var (

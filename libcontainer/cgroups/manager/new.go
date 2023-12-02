@@ -66,7 +66,7 @@ func getUnifiedPath(paths map[string]string) (string, error) {
 	if len(paths) > 1 {
 		return "", fmt.Errorf("expected a single path, got %+v", paths)
 	}
-	path := paths[""]
+	path := paths[""] //if the map is nil or does not contain such an entry, a[x] is the zero value for the element type of M
 	// can be empty
 	if path != "" {
 		if filepath.Clean(path) != path || !filepath.IsAbs(path) {

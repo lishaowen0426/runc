@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	_ "github.com/opencontainers/runc/comm"
 	"github.com/opencontainers/runc/libcontainer/seccomp"
 	"github.com/opencontainers/runtime-spec/specs-go"
 

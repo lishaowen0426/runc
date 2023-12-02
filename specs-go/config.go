@@ -276,6 +276,8 @@ const (
 	CgroupNamespace LinuxNamespaceType = "cgroup"
 	// TimeNamespace for isolating the clocks
 	TimeNamespace LinuxNamespaceType = "time"
+	// BPFNamespace for isolating BPF
+	BPFNamespace LinuxNamespaceType = "bpf"
 )
 
 // LinuxIDMapping specifies UID/GID mappings
