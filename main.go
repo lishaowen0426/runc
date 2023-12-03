@@ -10,9 +10,10 @@ import (
 	"strconv"
 	"strings"
 
-	_ "github.com/opencontainers/runc/comm"
-	"github.com/opencontainers/runc/libcontainer/seccomp"
 	"github.com/opencontainers/runtime-spec/specs-go"
+
+	"github.com/opencontainers/runc/comm"
+	"github.com/opencontainers/runc/libcontainer/seccomp"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -148,15 +149,23 @@ func main() {
 				fatal(err)
 			}
 		}
-		if err := reviseRootDir(context); err != nil {
+
+		if revisedRoot, err := reviseRootDir(context); err != nil {
 			return err
+		} else if revisedRoot != "" {
+			root = revisedRoot
 		}
 		// TODO: remove this in runc 1.3.0.
 		if context.IsSet("criu") {
 			fmt.Fprintln(os.Stderr, "WARNING: --criu ignored (criu binary from $PATH is used); do not use")
 		}
 
-		return configLogrus(context)
+		if logFile, err := configLogrus(context); err != nil {
+			return err
+		} else {
+			err = comm.SendConnected(root, logFile)
+			return err
+		}
 	}
 
 	// If the command returns an error, cli takes upon itself to print
@@ -180,7 +189,7 @@ func (f *FatalWriter) Write(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
-func configLogrus(context *cli.Context) error {
+func configLogrus(context *cli.Context) (string, error) {
 	if context.GlobalBool("debug") {
 		logrus.SetLevel(logrus.DebugLevel)
 		logrus.SetReportCaller(true)
@@ -206,16 +215,18 @@ func configLogrus(context *cli.Context) error {
 	case "json":
 		logrus.SetFormatter(new(logrus.JSONFormatter))
 	default:
-		return errors.New("invalid log-format: " + f)
+		return "", errors.New("invalid log-format: " + f)
 	}
 
-	if file := context.GlobalString("log"); file != "" {
+	var file string = ""
+
+	if file = context.GlobalString("log"); file != "" {
 		f, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY|os.O_APPEND|os.O_SYNC, 0o644)
 		if err != nil {
-			return err
+			return "", err
 		}
 		logrus.SetOutput(f)
 	}
 
-	return nil
+	return file, nil
 }

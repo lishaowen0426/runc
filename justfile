@@ -1,3 +1,5 @@
+alias bc := bash-create
+alias clear := clearall
 
 pkg := "github.com/opencontainers/runc"
 
@@ -12,3 +14,5 @@ test:
     go test -v -count=1 {{pkg}}/comm
     
 
+bash-create:
+    @sudo runc create  -b ${HOME}/oci-images/bash-bundle bash

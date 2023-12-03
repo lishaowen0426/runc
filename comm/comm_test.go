@@ -12,20 +12,33 @@ type testPayload struct {
 
 func TestNewUnixSocket(t *testing.T) {
 	defer Close()
-	p :=
-		Prot{
-			Command: "connected",
-			Payload: map[string]string{
-				"firstname": "a",
-				"lastname":  "b",
-			},
-		}
-	time.Sleep(10 * time.Second)
+	p := ConnectedPayload{
+		Root: "/run/runc",
+		Log:  "",
+	}
+	c := &Prot{
+		Act:     CONNECTED,
+		Payload: p,
+	}
 
-	if sent, err := Send(p); err != nil {
+	if err := c.Send(); err != nil {
 		t.Errorf("Send wrong: %s\n", err.Error())
-	} else {
-		t.Logf("Sent: %d\n", sent)
+	}
+
+	time.Sleep(2 * time.Second)
+
+}
+
+func TestPayload(t *testing.T) {
+	p := ConnectedPayload{
+		Root: "/run/runc",
+		Log:  "",
+	}
+
+	if m, err := ToMap(p); err != nil {
+		t.Errorf("to map failed: %s", err.Error())
+	} else if m["root"] != p.Root || m["log"] != p.Log {
+		t.Errorf("to map wrong value, %s: %s, %s: %s", "root", m["root"], "log", m["log"])
 	}
 
 }

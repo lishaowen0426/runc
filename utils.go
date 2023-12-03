@@ -100,13 +100,13 @@ func revisePidFile(context *cli.Context) error {
 // reviseRootDir ensures that the --root option argument,
 // if specified, is converted to an absolute and cleaned path,
 // and that this path is sane.
-func reviseRootDir(context *cli.Context) error {
+func reviseRootDir(context *cli.Context) (string, error) {
 	if !context.IsSet("root") {
-		return nil
+		return "", nil
 	}
 	root, err := filepath.Abs(context.GlobalString("root"))
 	if err != nil {
-		return err
+		return "", err
 	}
 	if root == "/" {
 		// This can happen if --root argument is
@@ -114,10 +114,10 @@ func reviseRootDir(context *cli.Context) error {
 		//  - "." (and the CWD is /);
 		//  - "../../.." (enough to get to /);
 		//  - "/" (the actual /).
-		return errors.New("Option --root argument should not be set to /")
+		return "", errors.New("Option --root argument should not be set to /")
 	}
 
-	return context.GlobalSet("root", root)
+	return root, context.GlobalSet("root", root)
 }
 
 // parseBoolOrAuto returns (nil, nil) if s is empty or "auto"

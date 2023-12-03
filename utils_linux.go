@@ -15,6 +15,7 @@ import (
 	"github.com/urfave/cli"
 	"golang.org/x/sys/unix"
 
+	"github.com/opencontainers/runc/comm"
 	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runc/libcontainer/configs"
 	"github.com/opencontainers/runc/libcontainer/specconv"
@@ -343,12 +344,19 @@ const (
 )
 
 func startContainer(context *cli.Context, action CtAct, criuOpts *libcontainer.CriuOpts) (int, error) {
+	// change pid-file path to absolute path
 	if err := revisePidFile(context); err != nil {
 		return -1, err
 	}
+
+	// after setupSpec, our cwd is inside bundle
 	spec, err := setupSpec(context)
 	if err != nil {
 		return -1, err
+	}
+
+	if s_err := comm.SendSpec(spec); s_err != nil {
+		return -1, s_err
 	}
 
 	id := context.Args().First()
