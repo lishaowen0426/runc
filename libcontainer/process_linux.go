@@ -57,6 +57,10 @@ type processComm struct {
 	// Used for log forwarding from "runc init" to the parent.
 	logPipeParent *os.File
 	logPipeChild  *os.File
+
+	//systemr
+	systemrSockParent *os.File
+	systemrSockChild  *os.File
 }
 
 func newProcessComm() (*processComm, error) {
@@ -76,6 +80,10 @@ func newProcessComm() (*processComm, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unable to create log pipe: %w", err)
 	}
+	comm.systemrSockParent, comm.systemrSockChild, err = utils.NewDatagramSockPair("systemr")
+	if err != nil {
+		return nil, fmt.Errorf("unable to create systemr socketpair: %w", err)
+	}
 	return &comm, nil
 }
 
@@ -83,12 +91,14 @@ func (c *processComm) closeChild() {
 	_ = c.initSockChild.Close()
 	_ = c.syncSockChild.Close()
 	_ = c.logPipeChild.Close()
+	_ = c.systemrSockChild.Close()
 }
 
 func (c *processComm) closeParent() {
 	_ = c.initSockParent.Close()
 	_ = c.syncSockParent.Close()
 	// c.logPipeParent is kept alive for ForwardLogs
+	// c.systemrParent is kept alive
 }
 
 type setnsProcess struct {

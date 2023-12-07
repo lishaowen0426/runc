@@ -42,6 +42,8 @@ func NsName(ns NamespaceType) string {
 		return "cgroup"
 	case NEWTIME:
 		return "time"
+	case NEWBPF:
+		return "bpf"
 	}
 	return ""
 }
@@ -77,6 +79,7 @@ func NamespaceTypes() []NamespaceType {
 		NEWNS,
 		NEWCGROUP,
 		NEWTIME,
+		NEWBPF,
 	}
 }
 

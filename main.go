@@ -55,6 +55,8 @@ value for "bundle" is the current directory.`
 )
 
 func main() {
+	defer comm.Close()
+
 	app := cli.NewApp()
 	app.Name = "runc"
 	app.Usage = usage
@@ -80,6 +82,8 @@ func main() {
 		root = xdgRuntimeDir + "/runc"
 		xdgDirUsed = true
 	}
+
+	comm.Connect()
 
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{

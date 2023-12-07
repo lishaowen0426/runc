@@ -98,3 +98,12 @@ func NewSockPair(name string) (parent, child *os.File, err error) {
 	}
 	return os.NewFile(uintptr(fds[1]), name+"-p"), os.NewFile(uintptr(fds[0]), name+"-c"), nil
 }
+
+// NewSockPair returns a new SOCK_DGRAM unix socket pair.
+func NewDatagramSockPair(name string) (parent, child *os.File, err error) {
+	fds, err := unix.Socketpair(unix.AF_LOCAL, unix.SOCK_DGRAM|unix.SOCK_CLOEXEC, 0)
+	if err != nil {
+		return nil, nil, err
+	}
+	return os.NewFile(uintptr(fds[1]), name+"-pd"), os.NewFile(uintptr(fds[0]), name+"-cd"), nil
+}

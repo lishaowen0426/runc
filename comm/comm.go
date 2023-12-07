@@ -26,42 +26,24 @@ type Prot struct {
 
 var mon Monitor
 
-func init() {
+func Connect() {
 	var err error
 	mon, err = newUDPConnection()
 
-	if err != nil && errors.Is(err, os.ErrNotExist) {
-		// unix domain socket does not exist
-		// this means the server is not listening on the socket
-	} else if err != nil {
+	if err != nil {
 		if oerr, ok := err.(*net.OpError); ok {
 			if serr, ook := oerr.Err.(*os.SyscallError); ook && serr.Err.Error() != "connection refused" {
-				panic(serr)
+				logrus.Warnf("Connect to systemr failed with %s", serr.Error())
 			}
 
 		} else {
-			panic(oerr)
+			logrus.Warnf("Connect to systemr failed with %s", err.Error())
 		}
 
 	}
 }
 
-func newUnixSocket() (Monitor, error) {
-
-	if _, err := os.Stat(SockPath); err != nil {
-		return Monitor{}, err
-	}
-
-	if conn, err := net.Dial("unix", SockPath); err != nil {
-		return Monitor{conn: nil}, err
-	} else {
-		return Monitor{conn: conn}, nil
-	}
-
-}
-
 func newUDPConnection() (Monitor, error) {
-
 	ack := make([]byte, 3)
 	var conn net.Conn
 	var err error
@@ -105,10 +87,16 @@ func newUDPConnection() (Monitor, error) {
 }
 
 func Close() error {
-	if err := SendDisconnected(); err != nil {
-		return err
+	var err error
+	if mon.conn != nil {
+		if err = SendDisconnected(); err != nil {
+			return err
+		}
+		return mon.conn.Close()
+
 	}
-	return mon.conn.Close()
+	return nil
+
 }
 
 func (p *Prot) Send() error {
@@ -139,4 +127,17 @@ func (p *Prot) Send() error {
 	logrus.Infof("Send to monitor: %s", string(bytes))
 
 	return nil
+}
+
+func GetFile() *os.File {
+
+	if udp, ok := mon.conn.(*net.UDPConn); ok {
+		if file, err := udp.File(); err != nil {
+			return nil
+		} else {
+			return file
+		}
+	} else {
+		return nil
+	}
 }

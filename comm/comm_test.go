@@ -27,6 +27,13 @@ func TestNewUnixSocket(t *testing.T) {
 
 	time.Sleep(2 * time.Second)
 
+	if f := GetFile(); f == nil {
+		t.Errorf("cannot get file")
+	} else {
+		t.Logf("conn fd: %d\n", f.Fd())
+
+	}
+
 }
 
 func TestPayload(t *testing.T) {

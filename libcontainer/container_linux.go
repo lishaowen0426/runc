@@ -586,6 +586,11 @@ func (c *Container) newParentProcess(p *Process) (parentProcess, error) {
 		cmd.Env = append(cmd.Env, "_LIBCONTAINER_LOGLEVEL="+p.LogLevel)
 	}
 
+	//systemr
+	cmd.ExtraFiles = append(cmd.ExtraFiles, comm.systemrSockChild)
+	cmd.Env = append(cmd.Env,
+		"_LIBCONTAINER_SYSTEMR="+strconv.Itoa(stdioFdCount+len(cmd.ExtraFiles)-1))
+
 	if safeExe != nil {
 		// Due to a Go stdlib bug, we need to add safeExe to the set of
 		// ExtraFiles otherwise it is possible for the stdlib to clobber the fd

@@ -1,5 +1,6 @@
 alias bc := bash-create
 alias clear := clearall
+alias k := kill
 
 pkg := "github.com/opencontainers/runc"
 
@@ -16,3 +17,6 @@ test:
 
 bash-create:
     @sudo runc create  -b ${HOME}/oci-images/bash-bundle bash
+
+kill:
+    kill -9 $(pgrep -f systemr)

@@ -2,6 +2,7 @@ package comm
 
 import (
 	"encoding/json"
+
 	specs "github.com/opencontainers/runc/specs-go"
 )
 
@@ -12,8 +13,9 @@ type Payload interface {
 
 const (
 	CONNECTED    Action = "Connected"
-	SPEC         Action = "Spec"
 	DISCONNECTED Action = "Disconnected"
+	SPEC         Action = "Spec"
+	NEWPARENT    Action = "Newparent"
 )
 
 func ToMap(p Payload) (map[string]any, error) {
@@ -81,4 +83,23 @@ func SendSpec(s *specs.Spec) error {
 	}
 
 	return p.Send()
+}
+
+type file struct {
+	Pid  uint   `json:"pid"`
+	Name string `json:"name"`
+}
+
+type processComm struct {
+	InitParent file `json:"init_parent"`
+	InitChild  file `json:"init_child"`
+
+	SyncParent file `json:"sync_parent"`
+	SyncChild  file `json:"sync_child"`
+
+	LogParent file `json:"log_parent"`
+	LogÇhild  file `json:"log_çhild"`
+}
+
+type ConfigPaylog struct {
 }
