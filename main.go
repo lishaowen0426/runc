@@ -12,7 +12,7 @@ import (
 
 	"github.com/opencontainers/runtime-spec/specs-go"
 
-	"github.com/opencontainers/runc/comm"
+	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runc/libcontainer/seccomp"
 
 	"github.com/sirupsen/logrus"
@@ -55,7 +55,7 @@ value for "bundle" is the current directory.`
 )
 
 func main() {
-	defer comm.Close()
+	defer libcontainer.CommClose()
 
 	app := cli.NewApp()
 	app.Name = "runc"
@@ -83,7 +83,7 @@ func main() {
 		xdgDirUsed = true
 	}
 
-	comm.Connect()
+	libcontainer.CommConnect()
 
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{
@@ -167,7 +167,7 @@ func main() {
 		if logFile, err := configLogrus(context); err != nil {
 			return err
 		} else {
-			err = comm.SendConnected(root, logFile)
+			err = libcontainer.SendConnected(root, logFile)
 			return err
 		}
 	}

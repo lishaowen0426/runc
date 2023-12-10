@@ -732,6 +732,7 @@ func (c *Container) sendFdsSources(cmd *exec.Cmd, comm *processComm, envVar stri
 }
 
 func (c *Container) newInitProcess(p *Process, cmd *exec.Cmd, comm *processComm) (*initProcess, error) {
+	logrus.Debug("new Init process")
 	cmd.Env = append(cmd.Env, "_LIBCONTAINER_INITTYPE="+string(initStandard))
 	nsMaps := make(map[configs.NamespaceType]string)
 	for _, ns := range c.config.Namespaces {
@@ -765,6 +766,7 @@ func (c *Container) newInitProcess(p *Process, cmd *exec.Cmd, comm *processComm)
 }
 
 func (c *Container) newSetnsProcess(p *Process, cmd *exec.Cmd, comm *processComm) (*setnsProcess, error) {
+	logrus.Debug("new setns process")
 	cmd.Env = append(cmd.Env, "_LIBCONTAINER_INITTYPE="+string(initSetns))
 	state, err := c.currentState()
 	if err != nil {

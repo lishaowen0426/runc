@@ -16,7 +16,7 @@ test:
     
 
 bash-create:
-    @sudo runc create  -b ${HOME}/oci-images/bash-bundle bash
+    @sudo runc --debug create  -b ${HOME}/oci-images/bash-bundle bash
 
 kill:
     kill -9 $(pgrep -f systemr)

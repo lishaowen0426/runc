@@ -1,4 +1,4 @@
-package comm
+package libcontainer
 
 import (
 	"encoding/binary"
@@ -26,7 +26,7 @@ type Prot struct {
 
 var mon Monitor
 
-func Connect() {
+func CommConnect() {
 	var err error
 	mon, err = newUDPConnection()
 
@@ -86,7 +86,7 @@ func newUDPConnection() (Monitor, error) {
 	}
 }
 
-func Close() error {
+func CommClose() error {
 	var err error
 	if mon.conn != nil {
 		if err = SendDisconnected(); err != nil {

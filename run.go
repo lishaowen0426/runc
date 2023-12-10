@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/opencontainers/runc/comm"
+	"github.com/opencontainers/runc/libcontainer"
 	"github.com/urfave/cli"
 )
 
@@ -76,7 +76,7 @@ command(s) that get executed on start, edit the args parameter of the spec. See
 		}
 		status, err := startContainer(context, CT_ACT_RUN, nil)
 		if err == nil {
-			comm.Close()
+			libcontainer.CommClose()
 			// exit with the container's exit status so any external supervisor is
 			// notified of the exit with the correct exit status.
 			os.Exit(status)

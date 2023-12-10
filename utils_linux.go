@@ -15,7 +15,6 @@ import (
 	"github.com/urfave/cli"
 	"golang.org/x/sys/unix"
 
-	"github.com/opencontainers/runc/comm"
 	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runc/libcontainer/configs"
 	"github.com/opencontainers/runc/libcontainer/specconv"
@@ -355,7 +354,7 @@ func startContainer(context *cli.Context, action CtAct, criuOpts *libcontainer.C
 		return -1, err
 	}
 
-	if s_err := comm.SendSpec(spec); s_err != nil {
+	if s_err := libcontainer.SendSpec(spec); s_err != nil {
 		return -1, s_err
 	}
 

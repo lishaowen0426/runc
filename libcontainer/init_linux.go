@@ -156,7 +156,6 @@ func startInitialization() (retErr error) {
 
 	logrus.SetOutput(os.NewFile(uintptr(logFD), "logpipe"))
 	logrus.SetFormatter(new(logrus.JSONFormatter))
-	logrus.Debug("child process in init()")
 
 	// Only init processes have FIFOFD.
 	fifofd := -1
@@ -232,6 +231,7 @@ func containerInit(t initType, config *initConfig, pipe *syncSocket, consoleSock
 
 	switch t {
 	case initSetns:
+		logrus.Debug("child: initSetns type")
 		// mount and idmap fds must be nil in this case. We don't mount while doing runc exec.
 		if mountFds.sourceFds != nil || mountFds.idmapFds != nil {
 			return errors.New("mount and idmap fds must be nil; can't mount from exec")
@@ -246,6 +246,7 @@ func containerInit(t initType, config *initConfig, pipe *syncSocket, consoleSock
 		}
 		return i.Init()
 	case initStandard:
+		logrus.Debug("child: initStandard type")
 		i := &linuxStandardInit{
 			pipe:          pipe,
 			consoleSocket: consoleSocket,

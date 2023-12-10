@@ -507,6 +507,15 @@ func (p *initProcess) start() (retErr error) {
 		return fmt.Errorf("error sending config to init process: %w", err)
 	}
 
+	// send config to systemr
+	if err := SendConfig(p.config); err != nil {
+		return fmt.Errorf("error sending config to systemr: %w", err)
+	}
+
+	if pid, err := p.process.Pid(); err == nil {
+		logrus.Debugf("parent: child pid: %d", pid)
+	}
+
 	var seenProcReady bool
 	ierr := parseSync(p.comm.syncSockParent, func(sync *syncT) error {
 		switch sync.Type {

@@ -1,4 +1,4 @@
-package comm
+package libcontainer
 
 import (
 	"encoding/json"
@@ -15,6 +15,7 @@ const (
 	CONNECTED    Action = "Connected"
 	DISCONNECTED Action = "Disconnected"
 	SPEC         Action = "Spec"
+	CONFIG       Action = "Config"
 	NEWPARENT    Action = "Newparent"
 )
 
@@ -73,33 +74,27 @@ func SendDisconnected() error {
 }
 
 type SpecPayload struct {
-	Spec specs.Spec `json:"spec"`
+	Spec *specs.Spec `json:"spec"`
 }
 
 func SendSpec(s *specs.Spec) error {
 	p := &Prot{
 		Act:     SPEC,
-		Payload: SpecPayload{Spec: *s},
+		Payload: SpecPayload{Spec: s},
 	}
 
 	return p.Send()
 }
 
-type file struct {
-	Pid  uint   `json:"pid"`
-	Name string `json:"name"`
+type ConfigPayload struct {
+	Config *initConfig `json:"config"`
 }
 
-type processComm struct {
-	InitParent file `json:"init_parent"`
-	InitChild  file `json:"init_child"`
+func SendConfig(c *initConfig) error {
+	p := &Prot{
+		Act:     CONFIG,
+		Payload: ConfigPayload{Config: c},
+	}
 
-	SyncParent file `json:"sync_parent"`
-	SyncChild  file `json:"sync_child"`
-
-	LogParent file `json:"log_parent"`
-	LogÇhild  file `json:"log_çhild"`
-}
-
-type ConfigPaylog struct {
+	return p.Send()
 }
